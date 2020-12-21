@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echo-deployment
+  labels:
+    app: k3s-echo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: k3s-echo
+  template:
+    metadata:
+      labels:
+        app: k3s-echo
+    spec:
+      containers:
+      - name: echo
+        image: hashicorp/http-echo
+        ports:
+        - containerPort: 5678
+        args: ["-text","Hi Idan!"]
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: echo-service
+spec:
+  selector:
+    app: k3s-echo
+  ports:
+  - port: 5678
+---
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: mysite-echo-ingress
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  rules:
+  - host: hi.k3s.ibidani.com
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: echo-service
+          servicePort: 5678
+  tls:
+  - hosts:
+    - hi.k3s.ibidani.com
+    secretName: ibidani-tls
