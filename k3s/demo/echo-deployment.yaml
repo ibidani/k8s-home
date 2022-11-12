@@ -31,12 +31,12 @@ spec:
   ports:
   - port: 5678
 ---
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: mysite-echo-ingress
   annotations:
-    kubernetes.io/ingress.class: "traefik"
+    ingressClassName: traefik
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
   rules:
@@ -44,9 +44,12 @@ spec:
     http:
       paths:
       - path: /
+        pathType: Prefix
         backend:
-          serviceName: echo-service
-          servicePort: 5678
+          service:
+            name: echo-service
+            port:
+              number: 5678
   tls:
   - hosts:
     - hi.k3s.ibidani.com
