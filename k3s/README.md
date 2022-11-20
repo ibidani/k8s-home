@@ -4,6 +4,10 @@ Quick install:
 ```shell
 curl -sfL https://get.k3s.io | sh -
 ```
+Installation using k3sup
+```shell
+k3sup install --ip $IP --user idan --k3s-version v1.24.7+k3s1 --k3s-extra-args '--cluster-domain k3s.ibidani.com --disable metrics-server'
+```
 
 On kubectl client host:
 ```shell
@@ -28,11 +32,12 @@ sudo systemctl start k3s
 ```shell
 kubectl create namespace cert-manager
 helm repo add jetstack https://charts.jetstack.io
-helm install \
+helm upgrade --install \
   cert-manager jetstack/cert-manager \
   --namespace cert-manager \
-  --version v1.1.0 \
-  --set installCRDs=true
+  --version v1.10.0 \
+  --set installCRDs=true \
+  --set 'extraArgs={--dns01-recursive-nameservers-only,--dns01-recursive-nameservers=8.8.8.8:53\,1.1.1.1:53}'
 ```
 
 ## To setup DNS challenge via Cloudflare
