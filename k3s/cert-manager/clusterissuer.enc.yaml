@@ -1,0 +1,39 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+    name: letsencrypt
+spec:
+    acme:
+        server: https://acme-v02.api.letsencrypt.org/directory
+        # Email address used for ACME registration
+        email: ENC[AES256_GCM,data:mr7QZeyYtkWqjriM7KFemfM=,iv:sKoUfyeQyenhOE+0lUtG0dgeBDSE/17DT51TIwmvyW4=,tag:Ct5hybmG79dNe+nustPqNg==,type:str]
+        # Name of a secret used to store the ACME account private key
+        privateKeySecretRef:
+            name: letsencrypt
+        solvers:
+            - dns01:
+                cloudflare:
+                    email: ENC[AES256_GCM,data:leT/z1xwDeZ8HyhXBXxZVZg=,iv:zsyIPQDZ8cSiSUM2bKKbVC8MykgNiPXxFf/w5Zm96b0=,tag:63cH3s97geqR7Hwryszj3A==,type:str]
+                    apiTokenSecretRef:
+                        name: cloudflare-api-token-secret
+                        key: api-token
+sops:
+    kms: []
+    gcp_kms: []
+    azure_kv: []
+    hc_vault: []
+    age:
+        - recipient: age1edhwupl3894j6fndflfgtth69xet0zhna53nczm52tyrlku52gsswdrhyp
+          enc: |
+            -----BEGIN AGE ENCRYPTED FILE-----
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBrbkxaTFV3NEJ6YVhqbCtT
+            TzVFY1dxdmd1YnFBa1lEUWFLcXBQeSs1WmtZClkraHIvV3kwazFzdUdWM09wU1Fr
+            anY0cENnSjBhZjVyUTdBdVc4ZU1PTXcKLS0tIG8yZGF0ZFNVVE9LdjlwLzZSMlZ0
+            cW1OV084OVNiSWtSOGswK2djVFRPRWMKRbUIcjHJb4/W9N1NH6mtI1TeU4EXTJe0
+            xdfEfbmXnOaulBWaEWzOr9+4TGvMH12sWj8aT5xlJFmNEQH81egKLg==
+            -----END AGE ENCRYPTED FILE-----
+    lastmodified: "2022-11-13T19:54:03Z"
+    mac: ENC[AES256_GCM,data:nlCKbXrVqehMXpNrQMAyqdccMW62Ucgjirr4UxxXWSqMeGhR6qoNF6v9J0NHdCS3mBjg2xrC8RJxti0tgxaYCUcwfULlsa5gCl5trOGaUn65vqGcPm4Bvbi1EAy6iZtRMxXqbD+w1wGc/e9ELgQOqqQHhbSgFpT2ATRm1a4iNcg=,iv:Vvsk3O0ZoezJTjgtjy0Ma8xbjfqefmQcuv6lN2osPVc=,tag:tkeax7TQr58aTZyWKH+KHg==,type:str]
+    pgp: []
+    encrypted_regex: ^(email)$
+    version: 3.7.3
